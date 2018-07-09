@@ -8,11 +8,11 @@ MongoClient.connect = function () {
         if (err) throw err;
         console.log('数据库已创建');
         let dbase = db.db('USER_INFO');
-            dbs.createCollection('user_info',function(err,res) {
-                if (err) throw err ;
-                console.log('创建集合');
-                db.close();
-            })
+        dbs.createCollection('user_info', function (err, res) {
+            if (err) throw err;
+            console.log('创建集合');
+            db.close();
+        })
         db.close();
     });
 };
@@ -21,27 +21,70 @@ MongoClient.connect = function () {
 MongoClient.insert = function () {
     if (err) throw err;
     let dbo = db.db('USER_INFO');
-    let firstDB = {name : '上海黄浦区下午',url : 'www.baidu.com'};
-        dbo.collection('user_info').insertOne(firstDB,function (err,res) {
-            if (err) throw err;
-            console.log('文档插入成功');
-            db.close();
-        });
+    let firstDB = {
+        name: '上海黄浦区下午',
+        url: 'www.baidu.com'
+    };
+    dbo.collection('user_info').insertOne(firstDB, function (err, res) {
+        if (err) throw err;
+        console.log('文档插入成功');
+        db.close();
+    });
 };
 
 //插入多条数据
 MongoClient.insertMany = function () {
     if (err) throw err;
-    let dbo = db.db('user_info');
-    let obj = [
-        {name : '猫', age : '一个月'},
-        {name : '旺财', age : '二个月'},
-        {name : '佩奇', age : '三个月'},
-        {name : '汪汪', age : '四个月个月'},
+    let dbo = db.db('USER_INFO');
+    let obj = [{
+            name: '猫',
+            age: '一个月'
+        },
+        {
+            name: '旺财',
+            age: '二个月'
+        },
+        {
+            name: '佩奇',
+            age: '三个月'
+        },
+        {
+            name: '汪汪',
+            age: '四个月个月'
+        },
     ];
-    dbo.collection('user_info').insertMany(obj,function (err,res) {
+    dbo.collection('user_info').insertMany(obj, function (err, res) {
         if (err) throw err;
-        console.log('插入文档的数量',res.insertedCount);
+        console.log('插入文档的数量', res.insertedCount);
         db.close();
     })
-}
+};
+
+//查询集合中的所有数据
+MongoClient.find = function () {
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        let dbo = db.db('USER_INFO');
+        dbo.collection('user_info').find({}).toArray(function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            db.close();
+        });
+    });
+};
+
+//指定查询集合数据
+MongoClient.findAppoint = function () {
+    MongodbClient.connect('url',function(err,db) {
+        if (err) throw err;
+        let dbo = db.db('USER_INFO');
+        let whereStr = {naem : '旺财'};
+        dbo.collection('user_info').find(whereStr).toArray(function (err,res) {
+            if (err) throw err;
+            console.log(res);
+            console.log('指定查询成功');
+            db.close();
+        });
+
+    });
+};
