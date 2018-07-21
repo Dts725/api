@@ -6,23 +6,23 @@ let session = require ('express-session');
 let bodyParser = require ('body-parser');
 let busboy = require ('connect-busboy');
 let compress = require ('compression');
-let  _ = require ('loadsh');
+// let  _ = require ('loadsh');
 let csurf = require ('csurf');
 let errorhandler = require('errorhandler');
 let helmet = require('helmet');
 let bytes = require('bytes');
 let passport = require('passport');
 let webRouter = require ('./we_router.js');
-
+let cors = require('cors');
 //静态资源
 let staticDir = path.join(__dirname,'public');
-
 
 //此部分待用
 
 
 
 let app = express ();
+app.use(cors())
 
 // app.set('views',path.join(__dirname,'views'));
 // app.set('view eenginee','html')
@@ -46,7 +46,8 @@ app.use(compress());
 //     }
 //   }));
 
-// app.use('/api/v1', cors(), apiRouterV1);
+app.use('/add', require('./api_services/add'));
+
 
 // app.use('/', staticDir);
 app.use(function (err, req, res, next) {
