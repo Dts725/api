@@ -26,7 +26,7 @@ export default {
       add () {
           axios({
               method : 'GET',
-              url : 'http://127.0.0.1:8088/add',
+              url : '/login',
           }).then(res => {
               console.log(res);
               console.log('测试成功了');

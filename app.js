@@ -29,7 +29,7 @@ app.use(cors())
 app.use('/public',express.static(staticDir));
 app.use(require('response-time')());
 app.use(helmet.frameguard('sameorigin'));
-app.use(bodyParser.json({limt : '1mb'}));
+app.use(bodyParser.json({limt : '2MB'}));
 app.use(require('method-override')());
 // app.use(require('cookie-parser')(config.session_secret));
 app.use(compress());
@@ -46,7 +46,7 @@ app.use(compress());
 //     }
 //   }));
 
-app.use('/add', require('./api_services/add'));
+app.all('/login', require('./api_services/add'));
 
 
 // app.use('/', staticDir);

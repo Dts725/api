@@ -16,18 +16,24 @@ MongoClient.connect = function () {
     });
 };
 
+
+
 //插入单条数据
-MongoClient.insert = function () {
+/*
+name 文档名
+collection : 集合名
+obj 插入的数据
+*/
+MongoClient.insert = function (name,collection,obj) {
+      MongodbClient.connect(url, function (err, db) {
     if (err) throw err;
-    let dbo = db.db('user');
-    let firstDB = {
-        name: '上海黄浦区下午',
-        url: 'www.baidu.com'
-    };
-    dbo.collection('user_info').insertOne(firstDB, function (err, res) {
+    let dbo = db.db(name);
+ 
+    dbo.collection(collection).insertOne(obj, function (err, res) {
         if (err) throw err;
         console.log('文档插入成功');
         db.close();
+    });
     });
 };
 
@@ -122,11 +128,11 @@ MongoClient.updateMany = function () {
 // 删除数据     
 MongoClient.deleteOne = function () {
     MongodbClient.connect(url,function (err,db) {
-        err(err);
+      assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         let whereStr = {'name' : '猫'};
         dbo.collection('user-info'.deleteOne(whereStr,function (err,res) {
-            err(err);
+          assert.equal(null,err);
             console.log(res);
             console.log('数据删除成功');
             db.close();
@@ -137,11 +143,11 @@ MongoClient.deleteOne = function () {
 //删除多条数据
 MongoClient.deleteMany = function () {
     MongodbClient.connect(url ,function (err,db) {
-        err(err);
+      assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         let whereStr = {type : 'en'};
         dbo.collection('user_info').deleteMany(whereStr,function(err,res) {
-            err(err);
+          assert.equal(null,err);
             console.log(res.result.n + '条文档被删除了');
 
         });
@@ -150,11 +156,11 @@ MongoClient.deleteMany = function () {
 
 //排序
 MongoClient.sort = function (err,db) {
-    err(err);
+  assert.equal(null,err);
     let dbo = db.db('USER_INFO');
     let mySort = {type : 1};
     dbo.collection('user_info').find().sort(mySort).toArray(function(err,res) {
-        err(err);
+      assert.equal(null,err);
         console.log(res);
         db.close();
     });
@@ -163,10 +169,10 @@ MongoClient.sort = function (err,db) {
 //查询分页
 MongoClient.limit = function () {
     MongodbClient.connect(url ,function(err,db) {
-        err(err);
+      assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         dbo.collection('user_info').find().limit(2).toArray(function (err, res) {
-            err(err);
+          assert.equal(null,err);
             console.log(res);
             db.close();
         });
@@ -178,7 +184,7 @@ MongoClient.limitSkip = function () {
     MongodbClient.connect(url,function (err,db) {
         let dbo = db.db('USER_INFO');
         dbo.collection('user_info').find().skip(2).limit(2).toArray(function (err,res) {
-            err(err);
+          assert.equal(null,err);
             console.log(res);
             db.close();
         })
@@ -197,7 +203,7 @@ MongoClient.lookUp = function () {
                 as : 'new'
             }
         ],function (err,res) {
-            err(err);
+          assert.equal(null,err);
             console.log(JSON.stringify(res));
             db.close();
         });
@@ -207,12 +213,26 @@ MongoClient.lookUp = function () {
 //删除集合
 MongoClient.deleteCollection = function () {
     MongodbClient.connect(url , function (err,db) {
-        err(err);
+      assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         dbo.collection('user_info').drop(err,function(err,res) {
-            err(err);
+          assert.equal(null,err);
             if (res) console.log('集合删除成功');
         })
+    })
+};
+
+//创建集合
+MongoClient.createCollection = function (name) {
+    MongodbClient.connect(url, function (err, db) {
+       assert.equal(null,err);
+        let dbo = db.db('user');
+        dbo.createCollection(name,function (err,res) {
+       assert.equal(null, err);
+            console.log('创建集合' + name);
+                    db.close();
+        })
+
     })
 };
 module.exports = MongoClient;
