@@ -1,15 +1,15 @@
 
-let MongodbClient = require('mongodb').MongoClient;
-let url = 'mongodb://47.100.55.117:27017/user';
+let MCD = require('mongodb').MongoClient;
+let url = 'mongodb://47.100.55.117:27017/';
 let assert = require('assert');
-let MongoClient = {};
+let MC = {};
 let err = function (err) {
     if (err) throw err;
 }
 //连接数据库
-MongoClient.connect = function () {
+MC.connect = function () {
 
-    MongodbClient.connect(url, function (err, db) {
+    MCD.connect(url, function (err, db) {
         assert.equal(null,err);
         console.log('数据库已创建');
         db.close();
@@ -24,21 +24,35 @@ name 文档名
 collection : 集合名
 obj 插入的数据
 */
-MongoClient.insert = function (name,collection,obj) {
-      MongodbClient.connect(url, function (err, db) {
-    if (err) throw err;
-    let dbo = db.db(name);
+// MC.insert = function (name,collection,obj) {
+//       MCD.connect(url, {useNewUrlParser: true} , function (err, db) {
+//     if (err) throw err;
+//     let dbo = db.db(name);
  
-    dbo.collection(collection).insertOne(obj, function (err, res) {
-        if (err) throw err;
-        console.log('文档插入成功');
-        db.close();
-    });
-    });
+//     dbo.collection(collection).insertOne(obj, function (err, res) {
+//         if (err) throw err;
+//         console.log(res);
+//         console.log('文档插入成功');
+//         db.close();
+//     });
+//     });
+// };
+MC.insert = async function (doc,collection, obj) {
+   
+
+   let db = await MCD.connect(url + doc, {
+       useNewUrlParser: true
+   });
+   let dbo = db.db(doc);
+   let blogs = await dbo.collection(collection).insert(obj);
+   console.log('文档插入成功了')
+
+   db.close();
+   return blogs;
 };
 
 //插入多条数据
-MongoClient.insertMany = function () {
+MC.insertMany = function () {
     if (err) throw err;
     let dbo = db.db('USER_INFO');
     let obj = [{
@@ -66,8 +80,8 @@ MongoClient.insertMany = function () {
 };
 
 //查询集合中的所有数据
-MongoClient.find = function () {
-    MongoClient.connect(url, function (err, db) {
+MC.find = function () {
+    MC.connect(url, function (err, db) {
         if (err) throw err;
         let dbo = db.db('USER_INFO');
         dbo.collection('user_info').find({}).toArray(function (err, res) {
@@ -79,24 +93,37 @@ MongoClient.find = function () {
 };
 
 //指定查询集合数据
-MongoClient.findAppoint = function () {
-    MongodbClient.connect('url',function(err,db) {
-        if (err) throw err;
-        let dbo = db.db('USER_INFO');
-        let whereStr = {naem : '旺财'};
-        dbo.collection('user_info').find(whereStr).toArray(function (err,res) {
-            if (err) throw err;
-            console.log(res);
-            console.log('指定查询成功');
-            db.close();
-        });
+// MC.findAppoint = function () {
+//     MCD.connect('url',function(err,db) {
+//         if (err) throw err;
+//         let dbo = db.db('USER_INFO');
+//         let whereStr = {naem : '旺财'};
+//         dbo.collection('user_info').find(whereStr).toArray(function (err,res) {
+//             if (err) throw err;
+//             console.log(res);
+//             console.log('指定查询成功');
+//             db.close();
+//         });
 
+//     });
+// };
+MC.findAppoint = async function (doc,collection,obj) {
+    let db = await MCD.connect(url + doc, {
+        useNewUrlParser: true
     });
+    let dbo = db.db(collection);
+    let blogs = await dbo.collection(collection).find(obj).toArray();
+
+    return blogs;
+    db.close();
+
+    
+
 };
 
 //更新数据
-MongoClient.updateOne = function () {
-    MongodbClient.connect(url, function (err, db) {
+MC.updateOne = function () {
+    MCD.connect(url, function (err, db) {
         if (err) throw err;
         let dbo = db.db('USER_INFO');
         let whereStr = { 'name': '旺财' };
@@ -111,8 +138,8 @@ MongoClient.updateOne = function () {
 }
 
 //更新多条数据
-MongoClient.updateMany = function () {
-    MongodbClient.connect(url ,function(err,db) {
+MC.updateMany = function () {
+    MCD.connect(url ,function(err,db) {
         if(err) throw err;
         let dbo = db.db('USEER_INFO');
         let whereStr = {'name' : '猫'};
@@ -126,8 +153,8 @@ MongoClient.updateMany = function () {
 };
 
 // 删除数据     
-MongoClient.deleteOne = function () {
-    MongodbClient.connect(url,function (err,db) {
+MC.deleteOne = function () {
+    MCD.connect(url,function (err,db) {
       assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         let whereStr = {'name' : '猫'};
@@ -141,8 +168,8 @@ MongoClient.deleteOne = function () {
 };
 
 //删除多条数据
-MongoClient.deleteMany = function () {
-    MongodbClient.connect(url ,function (err,db) {
+MC.deleteMany = function () {
+    MCD.connect(url ,function (err,db) {
       assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         let whereStr = {type : 'en'};
@@ -155,7 +182,7 @@ MongoClient.deleteMany = function () {
 };
 
 //排序
-MongoClient.sort = function (err,db) {
+MC.sort = function (err,db) {
   assert.equal(null,err);
     let dbo = db.db('USER_INFO');
     let mySort = {type : 1};
@@ -167,8 +194,8 @@ MongoClient.sort = function (err,db) {
 };
 
 //查询分页
-MongoClient.limit = function () {
-    MongodbClient.connect(url ,function(err,db) {
+MC.limit = function () {
+    MCD.connect(url ,function(err,db) {
       assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         dbo.collection('user_info').find().limit(2).toArray(function (err, res) {
@@ -180,8 +207,8 @@ MongoClient.limit = function () {
 };
 
 //跳过两条查询数据
-MongoClient.limitSkip = function () {
-    MongodbClient.connect(url,function (err,db) {
+MC.limitSkip = function () {
+    MCD.connect(url,function (err,db) {
         let dbo = db.db('USER_INFO');
         dbo.collection('user_info').find().skip(2).limit(2).toArray(function (err,res) {
           assert.equal(null,err);
@@ -192,8 +219,8 @@ MongoClient.limitSkip = function () {
 };
 
 //左链接
-MongoClient.lookUp = function () {
-    MongodbClient.connect(url ,function (err,db) {
+MC.lookUp = function () {
+    MCD.connect(url ,function (err,db) {
         let dbo =db.db('USER_INFO');
         dbo.collection("user_info").aggregate([
             {
@@ -211,8 +238,8 @@ MongoClient.lookUp = function () {
 };
 
 //删除集合
-MongoClient.deleteCollection = function () {
-    MongodbClient.connect(url , function (err,db) {
+MC.deleteCollection = function () {
+    MCD.connect(url , function (err,db) {
       assert.equal(null,err);
         let dbo = db.db('USER_INFO');
         dbo.collection('user_info').drop(err,function(err,res) {
@@ -223,8 +250,8 @@ MongoClient.deleteCollection = function () {
 };
 
 //创建集合
-MongoClient.createCollection = function (name) {
-    MongodbClient.connect(url, function (err, db) {
+MC.createCollection = function (name) {
+    MCD.connect(url, function (err, db) {
        assert.equal(null,err);
         let dbo = db.db('user');
         dbo.createCollection(name,function (err,res) {
@@ -235,4 +262,4 @@ MongoClient.createCollection = function (name) {
 
     })
 };
-module.exports = MongoClient;
+module.exports = MC;

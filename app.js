@@ -22,14 +22,17 @@ let staticDir = path.join(__dirname,'public');
 
 
 let app = express ();
-app.use(cors())
+app.use(cors());
 
 // app.set('views',path.join(__dirname,'views'));
 // app.set('view eenginee','html')
-app.use('/public',express.static(staticDir));
+app.use('/index',express.static(staticDir));
 app.use(require('response-time')());
 app.use(helmet.frameguard('sameorigin'));
 app.use(bodyParser.json({limt : '2MB'}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(require('method-override')());
 // app.use(require('cookie-parser')(config.session_secret));
 app.use(compress());
@@ -46,7 +49,7 @@ app.use(compress());
 //     }
 //   }));
 
-app.all('/login', require('./api_services/add'));
+app.use('/api1', webRouter);
 
 
 // app.use('/', staticDir);

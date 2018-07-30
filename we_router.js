@@ -1,7 +1,7 @@
 let express = require('express');
-
+let login = require('./api1/add.js')
 let router = express.Router();
-// router.get('/',index.html);
-
+    router.post('/register', login.register);
+    router.post('/login', login.login);
 
 module.exports = router;

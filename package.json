@@ -21,7 +21,6 @@
     "ms": "^2.1.1",
     "passport": "^0.4.0",
     "response-time": "^2.3.2",
-    "strip-ansi": "^4.0.0",
-    "vue": "^2.5.16"
+    "strip-ansi": "^4.0.0"
   }
 }
