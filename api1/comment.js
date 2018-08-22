@@ -21,8 +21,15 @@ index.find = async (req,resp) => {
     let find = await MC.findAppoint('comment','comment',req.body);
     if (find.length) {
         resp.send({
-            status : 1 //获取评论成功
+            status : 1,
+            msg : find //获取评论成功
         })
         return false;
-    }
-}
+    } 
+
+    res.send({
+        status : 0,
+        msg : '获取评论失败'
+    })
+};
+ module.exports = index;

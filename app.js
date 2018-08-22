@@ -9,10 +9,11 @@ let compress = require ('compression');
 // let  _ = require ('loadsh');
 let csurf = require ('csurf');
 let errorhandler = require('errorhandler');
-let helmet = require('helmet');
+// let helmet = require('helmet');
 let bytes = require('bytes');
 let passport = require('passport');
 let webRouter = require ('./we_router.js');
+let zj = require('./zj')
 let cors = require('cors');
 //静态资源
 let staticDir = path.join(__dirname,'public');
@@ -28,7 +29,7 @@ app.use(cors());
 // app.set('view eenginee','html')
 app.use('/index',express.static(staticDir));
 app.use(require('response-time')());
-app.use(helmet.frameguard('sameorigin'));
+// app.use(helmet.frameguard('sameorigin'));
 app.use(bodyParser.json({limt : '2MB'}));
 app.use(bodyParser.urlencoded({
     extended: true
@@ -50,6 +51,7 @@ app.use(compress());
 //   }));
 
 app.use('/api1', webRouter);
+app.use('/zj', zj);
 
 
 // app.use('/', staticDir);
