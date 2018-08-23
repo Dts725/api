@@ -7,7 +7,6 @@ index.uploadAliOss = async function (req, resp) {
     try {
         //文档中包含此数据则更新数据
             let data =await MC.findOneAndUpdate('aliOss', 'aliOss', {userId : req.body.userId},req.body);
-            console.log(data); 
         if (data) {
             resp.send({
                 errcode: 0,
@@ -38,7 +37,7 @@ index.getAliOss = async (req, resp) => {
     try {
         if (req.body) {
             let find = await MC.findAppoint('aliOss','aliOss',req.body);
-            console.log(find);
+    
             resp.send({
                 errcode: 0,
                 data: {

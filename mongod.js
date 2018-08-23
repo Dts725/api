@@ -1,5 +1,5 @@
 let MCD = require('mongodb').MongoClient;
-let url = 'mongodb://47.100.55.117:27017/';
+let url = 'mongodb://127.0.0.1:27017/';
 let assert = require('assert');
 let MC = {};
 let err = function (err) {

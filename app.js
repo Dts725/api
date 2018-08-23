@@ -27,10 +27,10 @@ app.use(cors());
 
 // app.set('views',path.join(__dirname,'views'));
 // app.set('view eenginee','html')
-app.use('/index',express.static(staticDir));
+app.use('/',express.static(staticDir));
 app.use(require('response-time')());
 // app.use(helmet.frameguard('sameorigin'));
-app.use(bodyParser.json({limt : '2MB'}));
+app.use(bodyParser.json({limt : '100MB'}));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -59,6 +59,6 @@ app.use(function (err, req, res, next) {
     console.error(err);
     return res.status(500).send('500 status');
   });
-  app.listen('8088',function() {
-      console.log('Server Start locallHost:8088')
+  app.listen('80',function() {
+      console.log('Server Start locallHost:80')
   })

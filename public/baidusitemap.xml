@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://yoursite.com/2016/05/06/hello-world/</loc>
+    <lastmod>2018-07-30T06:35:56.438Z</lastmod>
+    <data>
+        <display>
+        <title>vue实现多选和单选</title>
+        <pubTime>2016-05-06T00:00:00.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="VUE随笔" url="http://yoursite.com/categories/VUE%E9%9A%8F%E7%AC%94/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+</urlset>
