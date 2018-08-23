@@ -1,15 +1,14 @@
 let MC = require('../mongod.js');
 let index = {};
 
-index.uploadAliOss = async (req, resp) => {
-    console.log(req)
-    console.log(req.body)
-    console.log(req.query)
+
+index.uploadAliOss = async function (req, resp) {
+   
     try {
-        let insert = await MC.insert('aliOss', 'aliOss', req.body);
-
-        if (insert) {
-
+        //文档中包含此数据则更新数据
+            let data =await MC.findOneAndUpdate('aliOss', 'aliOss', {userId : req.body.userId},req.body);
+            console.log(data); 
+        if (data) {
             resp.send({
                 errcode: 0,
                 data: {
@@ -38,8 +37,9 @@ index.uploadAliOss = async (req, resp) => {
 index.getAliOss = async (req, resp) => {
     try {
         if (req.body) {
-            let find = await MC.find(req.usrId);
-            resp({
+            let find = await MC.findAppoint('aliOss','aliOss',req.body);
+            console.log(find);
+            resp.send({
                 errcode: 0,
                 data: {
                     result: find,
@@ -47,19 +47,21 @@ index.getAliOss = async (req, resp) => {
                 }
             })
         } else {
-            resp({
+            resp.send({
                 errcode: 1,
                 data: {
-                    result: find,
+                    result: '查询失败',
                     msg: 0 //写入失败
                 }
             })
         }
     } catch (e) {
+
+        console.log(e);
         resp.send({
-            errcode: 1,
+            errcode: 500,
             data: {
-                msg: e // 写入失败
+                msg: '内部错误' // 写入失败
             }
         })
     }
